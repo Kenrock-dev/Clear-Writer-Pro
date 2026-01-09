@@ -1,0 +1,550 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ClearWriter Pro - Professional AI Writing Extension</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- JSZip for Extension Generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            scroll-behavior: smooth;
+        }
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .hero-gradient {
+            background: radial-gradient(circle at top right, rgba(99, 102, 241, 0.05), transparent),
+                        radial-gradient(circle at bottom left, rgba(139, 92, 246, 0.05), transparent);
+        }
+    </style>
+<script type="importmap">
+{
+  "imports": {
+    "jszip": "https://esm.sh/jszip@^3.10.1",
+    "react": "https://esm.sh/react@^19.2.3",
+    "lucide-react": "https://esm.sh/lucide-react@^0.562.0",
+    "react/": "https://esm.sh/react@^19.2.3/"
+  }
+}
+</script>
+</head>
+<body class="bg-[#fafafa] text-slate-900">
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 right-0 z-50 border-b border-slate-200 glass-nav">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex justify-between items-center">
+            <div class="flex items-center gap-2">
+                <div class="bg-indigo-600 p-2 rounded-xl">
+                    <i data-lucide="sparkles" class="w-5 h-5 text-white"></i>
+                </div>
+                <span class="text-xl font-extrabold text-slate-900 tracking-tight">ClearWriter <span class="text-indigo-600">Pro</span></span>
+            </div>
+            
+            <div class="hidden md:flex gap-10 text-sm font-semibold text-slate-600">
+                <a href="#features" class="hover:text-indigo-600 transition-colors">Features</a>
+                <a href="#install" class="hover:text-indigo-600 transition-colors">Installation</a>
+                <a href="#use-cases" class="hover:text-indigo-600 transition-colors">Use Cases</a>
+            </div>
+
+            <button onclick="downloadExtension()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-full text-sm font-bold shadow-lg shadow-indigo-200 transition-all active:scale-95 flex items-center gap-2">
+                <i data-lucide="download" class="w-4 h-4"></i>
+                Download Zip
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative pt-40 pb-24 px-6 hero-gradient">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            <div>
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-50 border border-indigo-100 text-indigo-600 text-xs font-bold mb-8">
+                    <i data-lucide="zap" class="w-3 h-3 fill-indigo-600"></i>
+                    <span>FASTEST WRITING ASSISTANT</span>
+                </div>
+                <h1 class="text-5xl md:text-7xl font-extrabold leading-[1.1] text-slate-900 mb-8">
+                    Polish your prose <br />
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-violet-600">anywhere on the web.</span>
+                </h1>
+                <p class="text-xl text-slate-600 mb-10 max-w-xl leading-relaxed">
+                    A lightweight Chrome extension that injects professional AI editing directly into your browser. Bring your own keys for maximum privacy and zero monthly fees.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-5">
+                    <button onclick="downloadExtension()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-10 py-5 rounded-2xl text-lg font-bold shadow-2xl shadow-indigo-100 transition-all flex items-center justify-center gap-3">
+                        <i data-lucide="download" class="w-5 h-5"></i>
+                        Get Extension Files
+                    </button>
+                    <a href="#install" class="bg-white border border-slate-200 text-slate-700 px-10 py-5 rounded-2xl text-lg font-bold hover:bg-slate-50 transition-all flex items-center justify-center gap-2">
+                        Setup Guide
+                        <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                    </a>
+                </div>
+                <div class="mt-12 flex flex-wrap gap-8 text-sm text-slate-500 font-semibold">
+                    <div class="flex items-center gap-2">
+                        <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-500"></i>
+                        No Subscriptions
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-500"></i>
+                        Gemini 3 Support
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-500"></i>
+                        Groq Llama 3
+                    </div>
+                </div>
+            </div>
+
+            <!-- Preview Mockup -->
+            <div class="relative">
+                <div class="bg-white rounded-[2.5rem] shadow-2xl border border-slate-200 overflow-hidden relative z-10">
+                    <div class="bg-slate-50 border-b border-slate-200 px-6 py-4 flex items-center gap-2">
+                        <div class="flex gap-1.5">
+                            <div class="w-3 h-3 rounded-full bg-red-400"></div>
+                            <div class="w-3 h-3 rounded-full bg-amber-400"></div>
+                            <div class="w-3 h-3 rounded-full bg-emerald-400"></div>
+                        </div>
+                        <div class="flex-1 bg-white h-8 rounded-lg border border-slate-200 mx-6 flex items-center px-4 text-[11px] text-slate-400 font-medium">
+                            Compose Message - web.slack.com
+                        </div>
+                    </div>
+                    <div class="p-10 space-y-6">
+                        <div class="bg-indigo-50 p-6 rounded-2xl border border-indigo-100 text-slate-800 text-lg leading-relaxed relative">
+                            "Hey can you look at this code? It works but i think it could be faster maybe."
+                            <div class="absolute -top-4 -right-4 bg-indigo-600 text-white p-2 rounded-xl shadow-xl animate-bounce">
+                                <i data-lucide="sparkles" class="w-5 h-5"></i>
+                            </div>
+                        </div>
+                        
+                        <!-- Mockup Menu -->
+                        <div class="bg-white rounded-2xl shadow-2xl border border-slate-200 w-full p-2 grid grid-cols-2 gap-2">
+                            <div class="p-3 bg-slate-50 rounded-xl text-xs font-bold text-slate-700 flex items-center justify-between">
+                                Improve flow <i data-lucide="zap" class="w-3 h-3 text-amber-500"></i>
+                            </div>
+                            <div class="p-3 bg-indigo-600 rounded-xl text-xs font-bold text-white flex items-center justify-between">
+                                Professional <i data-lucide="arrow-right" class="w-3 h-3"></i>
+                            </div>
+                            <div class="p-3 bg-slate-50 rounded-xl text-xs font-bold text-slate-700">Fix grammar</div>
+                            <div class="p-3 bg-slate-50 rounded-xl text-xs font-bold text-slate-700">Simplify</div>
+                        </div>
+
+                        <div class="pt-6 border-t border-slate-100 flex gap-4">
+                            <div class="w-12 h-12 rounded-full bg-slate-100"></div>
+                            <div class="flex-1 space-y-2">
+                                <div class="h-4 w-1/3 bg-slate-100 rounded-full"></div>
+                                <div class="h-3 w-full bg-slate-50 rounded-full"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Decor Elements -->
+                <div class="absolute -top-20 -right-20 w-64 h-64 bg-indigo-400 rounded-full blur-[120px] opacity-20 -z-0"></div>
+                <div class="absolute -bottom-20 -left-20 w-64 h-64 bg-violet-400 rounded-full blur-[120px] opacity-20 -z-0"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-32 bg-white px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-20">
+                <h2 class="text-4xl md:text-5xl font-extrabold text-slate-900 mb-6">Designed for privacy & power.</h2>
+                <p class="text-slate-600 max-w-2xl mx-auto text-lg">ClearWriter Pro doesn't store your data on any server. It runs entirely in your browser using the keys you provide.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+                <div class="p-10 rounded-[2.5rem] bg-slate-50 border border-slate-100 hover:border-indigo-200 transition-all group">
+                    <div class="w-16 h-16 bg-white rounded-2xl shadow-sm border border-slate-100 flex items-center justify-center mb-8 group-hover:scale-110 transition-transform">
+                        <i data-lucide="mouse-pointer-2" class="w-8 h-8 text-indigo-600"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-slate-900 mb-4">Highlight to Edit</h3>
+                    <p class="text-slate-600 leading-relaxed">Simply select text in any input field or text area, click the floating icon, and choose your transformation.</p>
+                </div>
+                <div class="p-10 rounded-[2.5rem] bg-slate-50 border border-slate-100 hover:border-indigo-200 transition-all group">
+                    <div class="w-16 h-16 bg-white rounded-2xl shadow-sm border border-slate-100 flex items-center justify-center mb-8 group-hover:scale-110 transition-transform">
+                        <i data-lucide="shield-check" class="w-8 h-8 text-emerald-600"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-slate-900 mb-4">BYO API Keys</h3>
+                    <p class="text-slate-600 leading-relaxed">Supports Google Gemini 3 and Groq Llama 3. Your keys are stored locally in your browser's secure storage.</p>
+                </div>
+                <div class="p-10 rounded-[2.5rem] bg-slate-50 border border-slate-100 hover:border-indigo-200 transition-all group">
+                    <div class="w-16 h-16 bg-white rounded-2xl shadow-sm border border-slate-100 flex items-center justify-center mb-8 group-hover:scale-110 transition-transform">
+                        <i data-lucide="globe" class="w-8 h-8 text-violet-600"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-slate-900 mb-4">Universal Support</h3>
+                    <p class="text-slate-600 leading-relaxed">Works on Gmail, LinkedIn, Twitter, Slack, GitHub, and virtually any other website where you type.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Installation Section -->
+    <section id="install" class="py-32 bg-slate-900 text-white px-6">
+        <div class="max-w-4xl mx-auto">
+            <h2 class="text-4xl md:text-5xl font-extrabold text-center mb-16 text-white">How to Install</h2>
+            <div class="space-y-12">
+                <div class="flex gap-8 items-start">
+                    <div class="w-12 h-12 rounded-full bg-indigo-600 flex items-center justify-center font-bold text-xl flex-shrink-0">1</div>
+                    <div>
+                        <h3 class="text-2xl font-bold mb-3 text-white">Download the Extension Zip</h3>
+                        <p class="text-slate-400 mb-6 text-lg leading-relaxed">Click the download button below to get the pre-packaged extension files.</p>
+                        <button onclick="downloadExtension()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-8 py-4 rounded-2xl font-bold shadow-xl transition-all flex items-center gap-2">
+                            <i data-lucide="download" class="w-5 h-5"></i>
+                            ClearWriterPro.zip
+                        </button>
+                    </div>
+                </div>
+                <div class="flex gap-8 items-start">
+                    <div class="w-12 h-12 rounded-full bg-slate-800 flex items-center justify-center font-bold text-xl flex-shrink-0">2</div>
+                    <div>
+                        <h3 class="text-2xl font-bold mb-3 text-white">Extract & Open Chrome Extensions</h3>
+                        <p class="text-slate-400 text-lg leading-relaxed">Unzip the folder. In Chrome, navigate to <code class="bg-slate-800 px-2 py-1 rounded text-indigo-400 font-mono">chrome://extensions</code></p>
+                    </div>
+                </div>
+                <div class="flex gap-8 items-start">
+                    <div class="w-12 h-12 rounded-full bg-slate-800 flex items-center justify-center font-bold text-xl flex-shrink-0">3</div>
+                    <div>
+                        <h3 class="text-2xl font-bold mb-3 text-white">Load Unpacked</h3>
+                        <p class="text-slate-400 text-lg leading-relaxed">Enable <strong>"Developer mode"</strong> (top right), then click <strong>"Load unpacked"</strong> and select the extracted folder.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Use Cases Section -->
+    <section id="use-cases" class="py-32 bg-white px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+                <div>
+                    <h2 class="text-4xl md:text-5xl font-extrabold text-slate-900 mb-8 leading-tight">From messy drafts to polished prose.</h2>
+                    <div class="space-y-8">
+                        <div class="flex gap-6 p-6 rounded-3xl hover:bg-slate-50 transition-colors">
+                            <div class="w-12 h-12 rounded-2xl bg-indigo-100 flex items-center justify-center flex-shrink-0">
+                                <i data-lucide="mail" class="w-6 h-6 text-indigo-600"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-xl font-bold mb-2">Professional Emails</h4>
+                                <p class="text-slate-600 leading-relaxed">Instantly tone-check your emails to sound more authoritative or friendly depending on the recipient.</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-6 p-6 rounded-3xl hover:bg-slate-50 transition-colors">
+                            <div class="w-12 h-12 rounded-2xl bg-amber-100 flex items-center justify-center flex-shrink-0">
+                                <i data-lucide="code" class="w-6 h-6 text-amber-600"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-xl font-bold mb-2">Technical Documentation</h4>
+                                <p class="text-slate-600 leading-relaxed">Simplify complex technical explanations so they're accessible to stakeholders and clients.</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-6 p-6 rounded-3xl hover:bg-slate-50 transition-colors">
+                            <div class="w-12 h-12 rounded-2xl bg-emerald-100 flex items-center justify-center flex-shrink-0">
+                                <i data-lucide="users" class="w-6 h-6 text-emerald-600"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-xl font-bold mb-2">Social Media</h4>
+                                <p class="text-slate-600 leading-relaxed">Craft more engaging LinkedIn posts or tweets by improving the flow and impact of your sentences.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-6">
+                    <div class="space-y-6">
+                        <div class="h-64 bg-indigo-50 rounded-3xl p-8 flex flex-col justify-end">
+                            <div class="text-indigo-600 font-extrabold text-3xl mb-2">5.0</div>
+                            <div class="text-slate-500 font-bold uppercase text-[10px] tracking-widest">Developer Rating</div>
+                        </div>
+                        <div class="h-48 bg-slate-900 rounded-3xl p-8 flex flex-col justify-end">
+                            <div class="text-white font-extrabold text-3xl mb-2">0ms</div>
+                            <div class="text-slate-400 font-bold uppercase text-[10px] tracking-widest">Latency (Local)</div>
+                        </div>
+                    </div>
+                    <div class="space-y-6 pt-12">
+                        <div class="h-48 bg-violet-600 rounded-3xl p-8 flex flex-col justify-end">
+                            <div class="text-white font-extrabold text-3xl mb-2">100%</div>
+                            <div class="text-violet-200 font-bold uppercase text-[10px] tracking-widest">Private & Secure</div>
+                        </div>
+                        <div class="h-64 bg-slate-100 rounded-3xl p-8 flex flex-col justify-end">
+                            <div class="text-slate-900 font-extrabold text-3xl mb-2">Any</div>
+                            <div class="text-slate-500 font-bold uppercase text-[10px] tracking-widest">Website Supported</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-slate-50 border-t border-slate-200 py-24 px-6">
+        <div class="max-w-7xl mx-auto flex flex-col items-center text-center">
+            <div class="bg-indigo-600 p-4 rounded-2xl mb-10 shadow-2xl shadow-indigo-100">
+                <i data-lucide="sparkles" class="w-10 h-10 text-white"></i>
+            </div>
+            <h2 class="text-4xl md:text-5xl font-extrabold text-slate-900 mb-6">Start writing better today.</h2>
+            <p class="text-slate-600 max-w-lg mb-12 text-lg leading-relaxed">Download ClearWriter Pro and bring world-class AI editing to every browser tab you open.</p>
+            <button onclick="downloadExtension()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-12 py-6 rounded-3xl text-xl font-bold shadow-2xl shadow-indigo-100 transition-all active:scale-95 flex items-center gap-3">
+                <i data-lucide="download" class="w-6 h-6"></i>
+                Download Zip Now
+            </button>
+            <div class="mt-20 pt-10 border-t border-slate-200 w-full flex flex-col md:flex-row justify-between items-center gap-8">
+                <div class="flex items-center gap-2">
+                    <span class="text-lg font-extrabold text-slate-900 tracking-tight">ClearWriter <span class="text-indigo-600">Pro</span></span>
+                </div>
+                <div class="flex gap-10 text-xs font-bold text-slate-400 uppercase tracking-widest">
+                    <span>V3.5.0 STABLE</span>
+                    <span>CHROME MANIFEST V3</span>
+                    <span>LOCAL STORAGE ONLY</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Extension File Generation Script -->
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        const MANIFEST = {
+            "manifest_version": 3,
+            "name": "ClearWriter Pro",
+            "version": "3.5.0",
+            "description": "Universal AI writing assistant for every browser tab.",
+            "permissions": ["storage", "activeTab", "scripting"],
+            "host_permissions": ["<all_urls>"],
+            "action": {
+                "default_popup": "popup.html",
+                "default_icon": "icon128.png"
+            },
+            "icons": {
+                "16": "icon16.png",
+                "48": "icon48.png",
+                "128": "icon128.png"
+            },
+            "content_scripts": [{
+                "matches": ["<all_urls>"],
+                "js": ["contentScript.js"]
+            }]
+        };
+
+        const CONTENT_SCRIPT = `
+let sparkle = null;
+let menu = null;
+
+async function getSettings() {
+    return new Promise((resolve) => {
+        chrome.storage.local.get(['activeProvider', 'geminiKey', 'groqKey'], (res) => {
+            resolve({
+                provider: res.activeProvider || 'gemini',
+                key: res.activeProvider === 'groq' ? res.groqKey : res.geminiKey
+            });
+        });
+    });
+}
+
+async function callAI(text, operation) {
+    const { provider, key } = await getSettings();
+    if (!key) throw new Error("API Key missing. Click Extension Settings.");
+
+    const prompt = \`Rewrite the following text for "\${operation}": "\${text}"\`;
+    const sys = "You are a professional editor. Rewrite user text. Return ONLY the rewritten text.";
+
+    if (provider === 'gemini') {
+        const url = \`https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=\${key}\`;
+        const res = await fetch(url, {
+            method: 'POST',
+            body: JSON.stringify({
+                contents: [{ parts: [{ text: prompt }] }],
+                config: { systemInstruction: sys }
+            })
+        });
+        const data = await res.json();
+        if (data.error) throw new Error(data.error.message);
+        return data.candidates[0].content.parts[0].text;
+    } else {
+        const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+            method: 'POST',
+            headers: { 'Authorization': \`Bearer \${key}\`, 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                model: 'llama-3.3-70b-versatile',
+                messages: [{ role: 'system', content: sys }, { role: 'user', content: prompt }]
+            })
+        });
+        const data = await res.json();
+        if (data.error) throw new Error(data.error.message);
+        return data.choices[0].message.content;
+    }
+}
+
+function createSparkle() {
+    const btn = document.createElement('div');
+    btn.style.cssText = 'position:fixed;z-index:999999;background:#6366f1;width:32px;height:32px;border-radius:10px;display:none;align-items:center;justify-content:center;box-shadow:0 8px 16px rgba(99,102,241,0.3);cursor:pointer;border:2px solid #fff;';
+    btn.innerHTML = '<svg width="18" height="18" viewBox="0 0 20 20" fill="white"><path d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z"/></svg>';
+    document.body.appendChild(btn);
+    return btn;
+}
+
+function showMenu(text, rect) {
+    if (menu) menu.remove();
+    menu = document.createElement('div');
+    menu.style.cssText = 'position:fixed;z-index:999999;background:#fff;border-radius:16px;box-shadow:0 20px 40px rgba(0,0,0,0.1);border:1px solid #f1f5f9;width:220px;padding:8px;font-family:sans-serif;';
+    menu.style.top = (rect.bottom + window.scrollY + 12) + 'px';
+    menu.style.left = (rect.left + window.scrollX) + 'px';
+
+    const ops = ['Improve flow', 'Fix grammar', 'Simplify', 'Professional tone'];
+    menu.innerHTML = ops.map(op => \`<div class="cw-item" style="padding:10px;cursor:pointer;border-radius:10px;font-size:13px;font-weight:600;color:#334155;">\${op}</div>\`).join('');
+    
+    document.body.appendChild(menu);
+    menu.querySelectorAll('.cw-item').forEach((item, i) => {
+        item.onmouseover = () => item.style.background = '#f8fafc';
+        item.onmouseout = () => item.style.background = 'none';
+        item.onclick = async () => {
+            menu.innerHTML = '<div style="padding:20px;text-align:center;font-size:11px;font-weight:900;color:#6366f1;">Processing...</div>';
+            try {
+                const result = await callAI(text, ops[i]);
+                menu.innerHTML = \`<div style="padding:15px;font-size:14px;line-height:1.5;max-height: 200px; overflow-y: auto;">\${result}</div><div style="padding:8px;border-top:1px solid #f1f5f9;display:flex;gap:8px;"><button id="cw-apply" style="flex:1;background:#6366f1;color:#fff;border:none;padding:10px;border-radius:8px;font-weight:700;cursor:pointer;">Apply</button></div>\`;
+                document.getElementById('cw-apply').onclick = () => {
+                   document.execCommand('insertText', false, result);
+                   menu.remove();
+                };
+            } catch (e) {
+                menu.innerHTML = \`<div style="padding:15px;color:red;font-size:12px;">\${e.message}</div>\`;
+                setTimeout(() => menu.remove(), 3000);
+            }
+        };
+    });
+}
+
+document.addEventListener('mouseup', () => {
+    const sel = window.getSelection();
+    const text = sel.toString().trim();
+    if (text.length > 5) {
+        if (!sparkle) sparkle = createSparkle();
+        const range = sel.getRangeAt(0);
+        const rect = range.getBoundingClientRect();
+        sparkle.style.display = 'flex';
+        sparkle.style.top = (rect.top + window.scrollY - 40) + 'px';
+        sparkle.style.left = (rect.left + window.scrollX + rect.width / 2 - 16) + 'px';
+        sparkle.onclick = (e) => { 
+            e.stopPropagation();
+            sparkle.style.display = 'none'; 
+            showMenu(text, rect); 
+        };
+    } else {
+        if (sparkle) sparkle.style.display = 'none';
+    }
+});
+
+document.addEventListener('mousedown', (e) => {
+    if (menu && !menu.contains(e.target)) menu.remove();
+});
+`;
+
+        const POPUP_HTML = `
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body { width: 320px; font-family: sans-serif; background: #fcfdfe; color: #1e293b; padding: 20px; margin: 0; }
+        h1 { font-size: 16px; font-weight: 800; margin: 0 0 20px; color: #6366f1; }
+        .group { margin-bottom: 20px; }
+        label { display: block; font-size: 10px; font-weight: 800; color: #94a3b8; text-transform: uppercase; margin-bottom: 8px; }
+        select, input { width: 100%; box-sizing: border-box; padding: 12px; border: 1px solid #e2e8f0; border-radius: 12px; font-size: 13px; outline: none; }
+        button { width: 100%; padding: 14px; background: #6366f1; color: #fff; border: none; border-radius: 12px; font-weight: 700; cursor: pointer; }
+        .footer { font-size: 10px; text-align: center; color: #94a3b8; margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <h1>ClearWriter Settings</h1>
+    <div class="group">
+        <label>AI Provider</label>
+        <select id="provider">
+            <option value="gemini">Google Gemini</option>
+            <option value="groq">Groq Console</option>
+        </select>
+    </div>
+    <div class="group">
+        <label id="key-label">API Key</label>
+        <input type="password" id="api-key" placeholder="Paste key here...">
+    </div>
+    <button id="save">Save Settings</button>
+    <div class="footer">v3.5.0 • Private Local Storage</div>
+    <script src="popup.js"></script>
+</body>
+</html>
+`;
+
+        const POPUP_JS = `
+document.addEventListener('DOMContentLoaded', () => {
+    const provSelect = document.getElementById('provider');
+    const keyInput = document.getElementById('api-key');
+    const saveBtn = document.getElementById('save');
+
+    chrome.storage.local.get(['activeProvider', 'geminiKey', 'groqKey'], (res) => {
+        provSelect.value = res.activeProvider || 'gemini';
+        keyInput.value = (res.activeProvider === 'groq' ? res.groqKey : res.geminiKey) || '';
+    });
+
+    saveBtn.onclick = () => {
+        const p = provSelect.value;
+        const key = keyInput.value.trim();
+        const update = { activeProvider: p };
+        if (p === 'gemini') update.geminiKey = key;
+        else update.groqKey = key;
+
+        chrome.storage.local.set(update, () => {
+            saveBtn.innerText = 'Settings Saved!';
+            setTimeout(() => saveBtn.innerText = 'Save Settings', 2000);
+        });
+    };
+});
+`;
+
+        async function downloadExtension() {
+            const zip = new JSZip();
+            zip.file("manifest.json", JSON.stringify(MANIFEST, null, 2));
+            zip.file("contentScript.js", CONTENT_SCRIPT);
+            zip.file("popup.html", POPUP_HTML);
+            zip.file("popup.js", POPUP_JS);
+
+            // Create a simple placeholder icon
+            const canvas = document.createElement('canvas');
+            canvas.width = 128;
+            canvas.height = 128;
+            const ctx = canvas.getContext('2d');
+            ctx.fillStyle = '#6366f1';
+            ctx.fillRect(0, 0, 128, 128);
+            ctx.fillStyle = 'white';
+            ctx.font = 'bold 80px sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('C', 64, 64);
+            
+            const iconBlob = await new Promise(resolve => canvas.toBlob(resolve));
+            const iconArrayBuffer = await iconBlob.arrayBuffer();
+            
+            zip.file("icon16.png", iconArrayBuffer);
+            zip.file("icon48.png", iconArrayBuffer);
+            zip.file("icon128.png", iconArrayBuffer);
+
+            const content = await zip.generateAsync({type:"blob"});
+            const url = URL.createObjectURL(content);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = "ClearWriterPro_Extension.zip";
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+    </script>
+</body>
+</html>
